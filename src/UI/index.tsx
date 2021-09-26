@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getIngredientById } from '../api/index';
 import CheckboxItem from './Checkbox/index';
 import RadioButton from './RadioButton/index';
+import { initialOrderState } from './state/initialOrderState';
 
 export default function PizzaConfiguratorComponent() {
   const handleSubmit = (event: any) => {
@@ -19,11 +20,9 @@ export default function PizzaConfiguratorComponent() {
     thumbnail: '',
   });
 
-  const [pizzaOrder, setPizzaOrder] = useState({
-    base: 30,
-    sauce: 'tomato',
-    cheese: [],
-  });
+  const [pizzaIngredientsState, setPizzaIngredientsState] = useState(
+    initialOrderState
+  );
 
   useEffect(() => {
     const loadData = async () => {
@@ -34,38 +33,42 @@ export default function PizzaConfiguratorComponent() {
   }, []);
 
   const handleChange = (event: { target: { name: string; value: number } }) => {
-    console.log('OnChange', event.target?.value);
     const data = {
       name: event.target.name,
       value: event.target.value,
     };
+    setPizzaIngredientsState({
+      ...pizzaIngredientsState,
+      [data.name]: data.value,
+    });
   };
+
+  console.log('Current ingredients state: ', pizzaIngredientsState);
 
   return (
     <>
       <form action="" onSubmit={handleSubmit}>
         <p>Select pizza size</p>
         <RadioButton
-          name={'pizzaSize'}
+          name={'size'}
           value={'30'}
           unit={'cm'}
           onChange={handleChange}
         />
         <RadioButton
-          name={'pizzaSize'}
+          name={'size'}
           value={'35'}
           unit={'cm'}
           onChange={handleChange}
         />
         <p>Select pizza base</p>
-        <RadioButton name={'pizzaBase'} value={'thin'} />
-        <RadioButton name={'pizzaBase'} value={'thick'} />
+        <RadioButton name={'base'} value={'thin'} onChange={handleChange} />
+        <RadioButton name={'base'} value={'thick'} onChange={handleChange} />
         <p>Select pizza sauce</p>
-        <RadioButton name={'pizzaSauce'} value={'tomato'} />
-        <RadioButton name={'pizzaSauce'} value={'white'} />
-        <RadioButton name={'pizzaSauce'} value={'hot'} />
+        <RadioButton name={'sauce'} value={'tomato'} onChange={handleChange} />
+        <RadioButton name={'sauce'} value={'white'} onChange={handleChange} />
+        <RadioButton name={'sauce'} value={'hot'} onChange={handleChange} />
         <p>Select cheese</p>
-        {/* {data.name} */}
         <CheckboxItem
           name={ingredientData.category}
           value={ingredientData.name}

@@ -4,7 +4,7 @@ interface RadioButtonComponentProps {
   name: string;
   value: string;
   unit?: string;
-  onChange?: (event: any) => void;
+  onChange: (event: any) => void;
 }
 
 export default function RadioButtonComponent({

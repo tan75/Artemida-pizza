@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { getIngredientById } from '../api/index';
 import CheckboxItem from './Checkbox/index';
 import RadioButton from './RadioButton/index';
@@ -20,7 +20,7 @@ export default function PizzaConfiguratorComponent() {
   });
 
   const [pizzaOrder, setPizzaOrder] = useState({
-    base: 30,
+    pizzaSize: '30',
     sauce: 'tomato',
     cheese: [],
   });
@@ -39,7 +39,11 @@ export default function PizzaConfiguratorComponent() {
       name: event.target.name,
       value: event.target.value,
     };
+
+    setPizzaOrder({ ...pizzaOrder, pizzaSize: data.value.toString() });
   };
+
+  console.log(222, pizzaOrder);
 
   return (
     <>

@@ -2,12 +2,49 @@ import React, { useEffect, useState, useReducer } from 'react';
 import { getIngredientById } from '../api/index';
 import CheckboxItem from './Checkbox/index';
 import RadioButton from './RadioButton/index';
+import { initialOrderState } from './state/initialOrderState';
 
-export default function PizzaConfiguratorComponent() {
+type ActionType = {
+  type:
+    | 'SELECT_BASE_INGREDIENT'
+    | 'SELECT_EXTRA_INGREDIENT'
+    | 'REMOVE_BASE_INGREDIENT'
+    | 'REMOVE_EXTRA_INGREDIENT';
+};
+
+const reducer = (state: OrderStateType, action: ActionType) => {
+  switch (action.type) {
+    case 'SELECT_BASE_INGREDIENT':
+      return { state: { ...state, [action.type]: 1000 } };
+    default:
+      return state;
+  }
+};
+
+type OrderStateType = {
+  size: string;
+  base: string;
+  sauce: string;
+  cheese: string[];
+  veg: string[];
+  meat: string[];
+};
+
+function init(initialOrderState: OrderStateType) {
+  return { initialOrderState: initialOrderState };
+}
+
+export default function PizzaConfiguratorComponent({
+  initialOrderState,
+}: {
+  initialOrderState: OrderStateType;
+}) {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log(event.target.radioButton.value);
   };
+
+  const [state, dispatch] = useReducer(reducer, initialOrderState, init);
 
   const [ingredientData, setIngredientData] = useState({
     id: '',
@@ -19,11 +56,13 @@ export default function PizzaConfiguratorComponent() {
     thumbnail: '',
   });
 
-  const [pizzaOrder, setPizzaOrder] = useState({
-    pizzaSize: '30',
-    sauce: 'tomato',
-    cheese: [],
-  });
+  // const [pizzaOrder, setPizzaOrder] = useState({
+  //   pizzaSize: '30',
+  //   sauce: 'tomato',
+  //   cheese: [],
+  // });
+
+  // const [state, dispatch] = useReducer(reducer, );
 
   useEffect(() => {
     const loadData = async () => {
@@ -40,10 +79,12 @@ export default function PizzaConfiguratorComponent() {
       value: event.target.value,
     };
 
-    setPizzaOrder({ ...pizzaOrder, pizzaSize: data.value.toString() });
+    // dispatch({ type: 'SELECT_BASE_INGREDIENT' });
+
+    // setPizzaOrder({ ...pizzaOrder, pizzaSize: data.value.toString() });
   };
 
-  console.log(222, pizzaOrder);
+  // console.log(222, pizzaOrder);
 
   return (
     <>

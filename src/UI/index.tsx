@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { getIngredientById } from '../api/index';
-import CheckboxItem from './Checkbox/index';
+import React, { useState } from 'react';
+import CheckboxItem from './CheckboxItem/index';
+import CheckboxItems from './CheckboxItems';
 import RadioButton from './RadioButton/index';
 import { initialOrderState } from './state/initialOrderState';
 
@@ -10,27 +10,9 @@ export default function PizzaConfiguratorComponent() {
     console.log(event.target.radioButton.value);
   };
 
-  const [ingredientData, setIngredientData] = useState({
-    id: '',
-    name: '',
-    slug: '',
-    price: '',
-    category: '',
-    image: '',
-    thumbnail: '',
-  });
-
   const [pizzaIngredientsState, setPizzaIngredientsState] = useState(
     initialOrderState
   );
-
-  useEffect(() => {
-    const loadData = async () => {
-      const json = await getIngredientById('KJ1aL-Cn');
-      setIngredientData(json);
-    };
-    loadData();
-  }, []);
 
   const handleChange = (event: { target: { name: string; value: number } }) => {
     const data = {
@@ -42,8 +24,6 @@ export default function PizzaConfiguratorComponent() {
       [data.name]: data.value,
     });
   };
-
-  console.log('Current ingredients state: ', pizzaIngredientsState);
 
   return (
     <>
@@ -69,10 +49,9 @@ export default function PizzaConfiguratorComponent() {
         <RadioButton name={'sauce'} value={'white'} onChange={handleChange} />
         <RadioButton name={'sauce'} value={'hot'} onChange={handleChange} />
         <p>Select cheese</p>
-        <CheckboxItem
-          name={ingredientData.category}
-          value={ingredientData.name}
-        />
+
+        <CheckboxItems />
+
         <br />
         <button>Submit</button>
       </form>

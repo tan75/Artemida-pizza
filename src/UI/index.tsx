@@ -3,56 +3,53 @@ import CheckboxItem from './CheckboxItem/index';
 import CheckboxItems from './CheckboxItems';
 import RadioButton from './RadioButton/index';
 import { initialOrderState } from './state/initialOrderState';
+import { useForm } from 'react-hook-form';
 
 export default function PizzaConfiguratorComponent() {
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    console.log(event.target.radioButton.value);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => {
+    console.log(data);
   };
 
-  const [pizzaIngredientsState, setPizzaIngredientsState] = useState(
-    initialOrderState
-  );
+  const selectedBaseItems = watch();
 
-  const handleChange = (event: { target: { name: string; value: number } }) => {
-    const data = {
-      name: event.target.name,
-      value: event.target.value,
-    };
-    setPizzaIngredientsState({
-      ...pizzaIngredientsState,
-      [data.name]: data.value,
-    });
-  };
+  console.log(selectedBaseItems);
 
   return (
     <>
-      <form action="" onSubmit={handleSubmit}>
-        <p>Select pizza size</p>
-        <RadioButton
-          name={'size'}
-          value={'30'}
-          unit={'cm'}
-          onChange={handleChange}
-        />
-        <RadioButton
-          name={'size'}
-          value={'35'}
-          unit={'cm'}
-          onChange={handleChange}
-        />
-        <p>Select pizza base</p>
-        <RadioButton name={'base'} value={'thin'} onChange={handleChange} />
-        <RadioButton name={'base'} value={'thick'} onChange={handleChange} />
-        <p>Select pizza sauce</p>
-        <RadioButton name={'sauce'} value={'tomato'} onChange={handleChange} />
-        <RadioButton name={'sauce'} value={'white'} onChange={handleChange} />
-        <RadioButton name={'sauce'} value={'hot'} onChange={handleChange} />
-        <p>Select cheese</p>
-
-        <CheckboxItems />
-
-        <br />
+      <form action="" onSubmit={handleSubmit(onSubmit)}>
+        Select pizza size
+        <label>
+          <input {...register('pizzaSize')} type="radio" value="30" />
+          30 cm
+        </label>
+        <label>
+          <input {...register('pizzaSize')} type="radio" value="35" />
+          35 cm
+        </label>
+        Select pizza base
+        <label>
+          <input {...register('pizzaBase')} type="radio" value="thick" />
+          Thick
+        </label>
+        <label>
+          <input {...register('pizzaBase')} type="radio" value="thin" />
+          Thin
+        </label>
+        <label>
+          <input {...register('cheese')} type="checkbox" value="mozarella" />
+          Mozarella
+        </label>
+        <label>
+          <input {...register('cheese')} type="checkbox" value="cheddar" />
+          Cheddar
+        </label>
         <button>Submit</button>
       </form>
     </>

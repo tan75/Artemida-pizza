@@ -1,8 +1,4 @@
-import React, { useRef, useState } from 'react';
-
 import { useForm } from 'react-hook-form';
-import SingleSelect from './SingleSelect';
-import { MultiSelect } from './MultiSelect';
 
 const INITIAL_PIZZA_CONFIG = {
   pizzaSize: 35,
@@ -16,11 +12,10 @@ export default function PizzaConfiguratorForm() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm({
-    defaultValues: INITIAL_PIZZA_CONFIG,
-  });
+  } = useForm();
 
-  const inputRef = useRef();
+  const selectedSingleItems = watch();
+  console.log(111, selectedSingleItems);
 
   const onSubmit = (data: any) => {
     console.log('onSubmit', data);
@@ -29,9 +24,33 @@ export default function PizzaConfiguratorForm() {
   return (
     <>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
-        {/* <SingleSelect /> */}
-
-        <MultiSelect ref={inputRef} />
+        Select pizza size
+        <label>
+          <input {...register('pizzaSize')} type="radio" value="30" />
+          30 cm
+        </label>
+        <label>
+          <input {...register('pizzaSize')} type="radio" value="35" />
+          35 cm
+        </label>
+        Select pizza base
+        <label>
+          <input {...register('pizzaBase')} type="radio" value="thick" />
+          Thick
+        </label>
+        <label>
+          <input {...register('pizzaBase')} type="radio" value="thin" />
+          Thin
+        </label>
+        Select Ingredients
+        <label>
+          <input {...register('cheese')} type="checkbox" value="mozarella" />
+          Mozarella
+        </label>
+        <label>
+          <input {...register('cheese')} type="checkbox" value="cheddar" />
+          Cheddar
+        </label>
         <button>Submit</button>
       </form>
     </>

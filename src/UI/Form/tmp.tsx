@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getIngredientById } from '../../../api';
+import { getIngredientById } from '../../api';
 
 interface CheckboxComponentProps {
   id: string;

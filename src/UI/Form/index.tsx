@@ -1,10 +1,7 @@
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-const INITIAL_PIZZA_CONFIG = {
-  pizzaSize: 35,
-  pizzaDough: 'thin',
-  pizzaCheese: 'mozarella',
-};
+import { getIngredientById, getIngredients } from '../../api';
+import { Ingredient, PizzaBaseType, PizzaSauce, PizzaSize } from './types';
 
 export default function PizzaConfiguratorForm() {
   const {
@@ -14,100 +11,63 @@ export default function PizzaConfiguratorForm() {
     formState: { errors },
   } = useForm();
 
-  const selectedSingleItems = watch();
-  console.log(111, selectedSingleItems);
+  const selectedPizzaItems = watch();
 
   const onSubmit = (data: any) => {
-    console.log('onSubmit', data);
+    console.log(111, 'Tetiana onSubmit', selectedPizzaItems);
   };
+
+  const [ingredients, setIngredients] = useState<Ingredient[]>();
+
+  const pizzaSizes: PizzaSize[] = [30, 35];
+  const pizzaSauces: PizzaSauce[] = ['tomato', 'white', 'hot'];
+  const pizzaBases: PizzaBaseType[] = ['thin', 'thick'];
+
+  useEffect(() => {
+    const loadIngredients = async () => {
+      const json = await getIngredients();
+      setIngredients(json);
+    };
+
+    loadIngredients();
+  }, []);
 
   return (
     <>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
-        <fieldset>
-          Select pizza size
-          <br />
-          <label>
-            <input {...register('pizzaSize')} type="radio" value="30" />
-            30 cm
-          </label>
-          <label>
-            <input {...register('pizzaSize')} type="radio" value="35" />
-            35 cm
-          </label>
-        </fieldset>
+        {pizzaBases.map((base) => (
+          <fieldset>
+            <input {...register('base')} type="radio" value={base} />
+            {base} base
+          </fieldset>
+        ))}
 
-        <fieldset>
-          Select pizza base
-          <br />
-          <label>
-            <input {...register('pizzaBase')} type="radio" value="thick" />
-            Thick
-          </label>
-          <label>
-            <input {...register('pizzaBase')} type="radio" value="thin" />
-            Thin
-          </label>
-        </fieldset>
+        {pizzaSauces.map((sauce) => (
+          <fieldset>
+            <input {...register('sauce')} type="radio" value={sauce} />
+            {sauce} sauce
+          </fieldset>
+        ))}
 
-        <fieldset>
-          Select cheese
-          <br />
-          <label>
-            <input {...register('cheese')} type="checkbox" value="mozarella" />
-            Mozarella
-          </label>
-          <label>
-            <input {...register('cheese')} type="checkbox" value="cheddar" />
-            Cheddar
-          </label>
-          <label>
-            <input {...register('cheese')} type="checkbox" value="dor-blue" />
-            Dor Blue
-          </label>
-        </fieldset>
+        {pizzaSizes.map((size) => (
+          <fieldset>
+            <input {...register('size')} type="radio" value={size} />
+            Size {size}
+          </fieldset>
+        ))}
 
-        <fieldset>
-          Select meat
-          <br />
-          <label>
-            <input {...register('meat')} type="checkbox" value="chicken" />
-            Chicken
-          </label>
-          <label>
-            <input {...register('meat')} type="checkbox" value="ham" />
-            Ham
-          </label>
-          <label>
-            <input {...register('meat')} type="checkbox" value="pepperoni" />
-            Pepperoni
-          </label>
-        </fieldset>
+        {ingredients &&
+          ingredients.map((ingredient) => (
+            <fieldset key={ingredient.id}>
+              <input
+                {...register('ingredient')}
+                type="checkbox"
+                value={ingredient.name}
+              />
+              {ingredient.name}
+            </fieldset>
+          ))}
 
-        <fieldset>
-          Select veg
-          <br />
-          <label>
-            <input {...register('veg')} type="checkbox" value="mushrooms" />
-            Mushrooms
-          </label>
-          <label>
-            <input {...register('veg')} type="checkbox" value="olives" />
-            Olives
-          </label>
-          <label>
-            <input {...register('veg')} type="checkbox" value="pineapple" />
-            Pineapple
-          </label>
-          <label>
-            <input {...register('veg')} type="checkbox" value="broccoli" />
-            Broccoli
-          </label>
-          <label>
-            <input {...register('veg')} type="checkbox" value="tomato" />
-            Tomato
-          </label>
-        </fieldset>
         <button>Submit</button>
       </form>
     </>

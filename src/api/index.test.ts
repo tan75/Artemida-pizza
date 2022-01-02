@@ -1,7 +1,7 @@
 import { getIngredientById } from './index';
 
 describe('getIngredientInfo', () => {
-  it.skip('fetches a correct info', () => {
+  xit('fetches a correct info', () => {
     return getIngredientById('KJ1aL-Cn').then((data) =>
       expect(data).toBe({
         id: 'KJ1aL-Cn',

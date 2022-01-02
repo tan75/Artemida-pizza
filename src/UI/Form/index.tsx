@@ -13,7 +13,7 @@ export default function PizzaConfiguratorForm() {
 
   const selectedPizzaItems = watch();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = () => {
     console.log(111, 'Tetiana onSubmit', selectedPizzaItems);
   };
 
@@ -35,24 +35,26 @@ export default function PizzaConfiguratorForm() {
   return (
     <>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
-        {pizzaBases.map((base) => (
-          <fieldset>
-            <input {...register('base')} type="radio" value={base} />
-            {base} base
-          </fieldset>
-        ))}
+        {pizzaBases.map((base) => {
+          return (
+            <fieldset key={base}>
+              <input {...register('base')} type="radio" value={base} />
+              {base} base
+            </fieldset>
+          );
+        })}
 
         {pizzaSauces.map((sauce) => (
-          <fieldset>
+          <fieldset key={sauce}>
             <input {...register('sauce')} type="radio" value={sauce} />
             {sauce} sauce
           </fieldset>
         ))}
 
         {pizzaSizes.map((size) => (
-          <fieldset>
+          <fieldset key={size}>
             <input {...register('size')} type="radio" value={size} />
-            Size {size}
+            size {size}
           </fieldset>
         ))}
 
@@ -62,9 +64,9 @@ export default function PizzaConfiguratorForm() {
               <input
                 {...register('ingredient')}
                 type="checkbox"
-                value={ingredient.name}
+                value={ingredient.slug}
               />
-              {ingredient.name}
+              {ingredient.slug}
             </fieldset>
           ))}
 

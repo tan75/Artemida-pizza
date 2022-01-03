@@ -32,6 +32,16 @@ export default function PizzaConfiguratorForm() {
     loadIngredients();
   }, []);
 
+  console.log(
+    111,
+    'Tetiana',
+    ingredients?.filter((ingredient) => {
+      if (ingredient.category === 'meat') {
+        return ingredient;
+      }
+    })
+  );
+
   return (
     <>
       <form action="" onSubmit={handleSubmit(onSubmit)}>

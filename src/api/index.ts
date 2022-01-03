@@ -18,3 +18,9 @@ export async function getIngredients() {
     `https://papaginos-server.herokuapp.com/v1/ingredients/`
   ).then((res) => res.json());
 }
+
+export async function getIngredientsByCategory(category: string) {
+  return await fetch(
+    `https://papaginos-server.herokuapp.com/v1/ingredients/`
+  ).then((res) => res.json());
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { getIngredientById, getIngredients } from '../../api';
 import { Ingredient, PizzaBaseType, PizzaSauce, PizzaSize } from './types';
+import { PizzaIngredients } from './Ingredients';
 
 export default function PizzaConfiguratorForm() {
   const {
@@ -17,7 +18,17 @@ export default function PizzaConfiguratorForm() {
     console.log(111, 'Tetiana onSubmit', selectedPizzaItems);
   };
 
-  const [ingredients, setIngredients] = useState<Ingredient[]>();
+  const [ingredients, setIngredients] = useState<Ingredient[]>([
+    {
+      id: 'id',
+      name: 'name',
+      slug: 'slug',
+      price: 3,
+      category: 'cat',
+      image: '',
+      thumbnail: '',
+    },
+  ]);
 
   const pizzaSizes: PizzaSize[] = [30, 35];
   const pizzaSauces: PizzaSauce[] = ['tomato', 'white', 'hot'];
@@ -32,19 +43,16 @@ export default function PizzaConfiguratorForm() {
     loadIngredients();
   }, []);
 
-  console.log(
-    111,
-    'Tetiana',
-    ingredients?.filter((ingredient) => {
-      if (ingredient.category === 'meat') {
-        return ingredient;
-      }
-    })
-  );
+  // console.log(
+  //   111,
+  //   'Tetiana',
+  //   ingredients?.filter((ingredient) => ingredient.category === 'cheese')
+  // );
 
   return (
     <>
-      <form action="" onSubmit={handleSubmit(onSubmit)}>
+      <PizzaIngredients ingredients={ingredients} />
+      {/* <form action="" onSubmit={handleSubmit(onSubmit)}>
         {pizzaBases.map((base) => {
           return (
             <fieldset key={base}>
@@ -81,7 +89,7 @@ export default function PizzaConfiguratorForm() {
           ))}
 
         <button>Submit</button>
-      </form>
+      </form> */}
     </>
   );
 }

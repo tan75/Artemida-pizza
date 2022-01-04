@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { getIngredientById, getIngredients } from '../../api';
 import { Ingredient, PizzaBaseType, PizzaSauce, PizzaSize } from './types';
 import { PizzaIngredients } from './Ingredients';
+import Cheese from './Ingredients/Cheese';
 
 export default function PizzaConfiguratorForm() {
   const {
@@ -32,6 +33,23 @@ export default function PizzaConfiguratorForm() {
   const pizzaBases: PizzaBaseType[] = ['thin', 'thick'];
   const [cheese, setCheese] = useState<string[]>([]);
 
+  function reducer(ingredientsSelection: any, action: any) {
+    switch (action.type) {
+      case 'add_cheese':
+        return { ...ingredientsSelection, cheese: [action.value] };
+      default:
+        return { cheese: ['all cheese is gone!'] };
+    }
+  }
+
+  const [ingredientsSelection, dispatch] = useReducer(reducer, {
+    cheese: [''],
+  });
+
+  useEffect(() => {
+    dispatch({ type: 'add_cheese', value: cheese });
+  }, [cheese]);
+
   useEffect(() => {
     const loadIngredients = async () => {
       const json = await getIngredients();
@@ -42,13 +60,19 @@ export default function PizzaConfiguratorForm() {
   }, []);
 
   const onSubmit = () => {
-    console.log(111, 'Tetiana onSubmit', cheese);
+    console.log(111, 'Tetiana onSubmit', ingredientsSelection);
   };
+
+  console.log(232323, ingredientsSelection);
 
   return (
     <>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
-        <PizzaIngredients ingredients={ingredients} updateCheese={setCheese} />
+        <Cheese
+          ingredients={ingredients}
+          updateCheese={setCheese}
+          category="cheese"
+        />
 
         <button>Submit</button>
       </form>

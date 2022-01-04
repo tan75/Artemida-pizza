@@ -5,7 +5,8 @@ interface PizzaIngredientsProps {
   ingredients: Ingredient[];
   updateCheese: any;
 }
-
+// TODO: to delete if not used
+// Currently not used
 export function PizzaIngredients({
   ingredients,
 

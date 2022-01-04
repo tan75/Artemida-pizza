@@ -12,18 +12,15 @@ export default function PizzaConfiguratorForm() {
     formState: { errors },
   } = useForm();
 
-  const selectedPizzaItems = watch();
-
-  const onSubmit = () => {
-    console.log(111, 'Tetiana onSubmit', selectedPizzaItems);
-  };
-
+  /**
+   * Ingredients from the server
+   */
   const [ingredients, setIngredients] = useState<Ingredient[]>([
     {
       id: 'id',
       name: 'name',
       slug: 'slug',
-      price: 3,
+      price: 0,
       category: 'cat',
       image: '',
       thumbnail: '',
@@ -33,6 +30,7 @@ export default function PizzaConfiguratorForm() {
   const pizzaSizes: PizzaSize[] = [30, 35];
   const pizzaSauces: PizzaSauce[] = ['tomato', 'white', 'hot'];
   const pizzaBases: PizzaBaseType[] = ['thin', 'thick'];
+  const [cheese, setCheese] = useState<string[]>([]);
 
   useEffect(() => {
     const loadIngredients = async () => {
@@ -43,15 +41,18 @@ export default function PizzaConfiguratorForm() {
     loadIngredients();
   }, []);
 
-  // console.log(
-  //   111,
-  //   'Tetiana',
-  //   ingredients?.filter((ingredient) => ingredient.category === 'cheese')
-  // );
+  const onSubmit = () => {
+    console.log(111, 'Tetiana onSubmit', cheese);
+  };
 
   return (
     <>
-      <PizzaIngredients ingredients={ingredients} />
+      <form action="" onSubmit={handleSubmit(onSubmit)}>
+        <PizzaIngredients ingredients={ingredients} updateCheese={setCheese} />
+
+        <button>Submit</button>
+      </form>
+
       {/* <form action="" onSubmit={handleSubmit(onSubmit)}>
         {pizzaBases.map((base) => {
           return (

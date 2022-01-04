@@ -22,3 +22,8 @@ export type PizzaSauce = 'tomato' | 'white' | 'hot';
  * Pizza base, default is thin
  */
 export type PizzaBaseType = 'thin' | 'thick';
+
+/**
+ * Ingredient categories
+ */
+export type IngredientsCategory = 'meat' | 'vegetables' | 'cheese';

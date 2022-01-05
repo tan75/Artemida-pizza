@@ -26,6 +26,8 @@ export default function PizzaCheese({
   const selectedCheese = watch();
 
   useEffect(() => {
+    console.log(151515, Object.values(selectedCheese));
+    console.log(161616, selectedCheese);
     updateCheese(Object.values(selectedCheese));
   }, [selectedCheese.cheese]);
 

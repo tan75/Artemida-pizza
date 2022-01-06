@@ -31,27 +31,27 @@ export default function PizzaConfiguratorForm() {
   const pizzaSizes: PizzaSize[] = [30, 35];
   const pizzaSauces: PizzaSauce[] = ['tomato', 'white', 'hot'];
   const pizzaBases: PizzaBaseType[] = ['thin', 'thick'];
-  const [cheese, setCheese] = useState();
+  const [cheese, setCheese] = useState<string[]>([]);
 
   // TODO: to sort out types
   //@ts-ignore
   function reducer(ingredientsSelection: any, { type, payload }) {
     switch (type) {
       case 'add_cheese':
-        return { ...ingredientsSelection, [payload.name]: [payload.value] };
+        return { ...ingredientsSelection, [payload.name]: payload.value };
       default:
         return { cheese: ['all cheese is gone!'] };
     }
   }
 
   const [ingredientsSelection, dispatch] = useReducer(reducer, {
-    cheese: [''],
+    cheese: [],
   });
 
   useEffect(() => {
     dispatch({
       type: 'add_cheese',
-      payload: { name: 'cheese', value: cheese },
+      payload: { name: 'cheese', value: cheese[0] },
     });
   }, [cheese]);
 
@@ -67,9 +67,6 @@ export default function PizzaConfiguratorForm() {
   const onSubmit = () => {
     console.log(111, 'Tetiana onSubmit', ingredientsSelection);
   };
-
-  console.log(232323, JSON.stringify(ingredientsSelection));
-  console.log(242424, JSON.stringify(cheese));
 
   return (
     <>

@@ -33,6 +33,8 @@ export default function PizzaConfiguratorForm() {
   const pizzaBases: PizzaBaseType[] = ['thin', 'thick'];
   const [cheese, setCheese] = useState<string[]>([]);
 
+  const [loading, setLoading] = useState(true);
+
   // TODO: to sort out types
   //@ts-ignore
   function reducer(ingredientsSelection: any, { type, payload }) {
@@ -60,7 +62,7 @@ export default function PizzaConfiguratorForm() {
       const json = await getIngredients();
       setIngredients(json);
     };
-
+    setLoading(false);
     loadIngredients();
   }, []);
 
@@ -70,15 +72,19 @@ export default function PizzaConfiguratorForm() {
 
   return (
     <>
-      <form action="" onSubmit={handleSubmit(onSubmit)}>
-        <Cheese
-          ingredients={ingredients}
-          updateCheese={setCheese}
-          category="cheese"
-        />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <Cheese
+            ingredients={ingredients}
+            updateCheese={setCheese}
+            category="cheese"
+          />
 
-        <button>Submit</button>
-      </form>
+          <button>Submit</button>
+        </form>
+      )}
 
       {/* <form action="" onSubmit={handleSubmit(onSubmit)}>
         {pizzaBases.map((base) => {

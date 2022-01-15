@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Ingredient, IngredientsCategory } from '../../types';
+import { Ingredient, IngredientsCategoryType } from '../../types';
 import { getIngredientsByCategory } from '../_lib';
 
 interface PizzaCheeseProps {
   ingredients: Ingredient[];
-  category: IngredientsCategory;
+  category: IngredientsCategoryType;
   updateCheese: any;
 }
 
@@ -36,6 +36,7 @@ export default function PizzaCheese({
         {cheeses.map((cheese) => {
           return (
             <div key={cheese.name}>
+              <label htmlFor="category"></label>
               <input
                 type="checkbox"
                 value={cheese.name}

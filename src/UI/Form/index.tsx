@@ -1,9 +1,15 @@
 import { useEffect, useReducer, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { getIngredientById, getIngredients } from '../../api';
-import { Ingredient, PizzaBaseType, PizzaSauce, PizzaSize } from './types';
+import {
+  Ingredient,
+  PizzaBaseType,
+  PizzaSauceType,
+  PizzaSizeType,
+} from './types';
 import { PizzaIngredients } from './Ingredients';
 import Cheese from './Ingredients/Cheese';
+import Sauce from './Ingredients/Sauce';
 
 export default function PizzaConfiguratorForm() {
   const {
@@ -28,10 +34,11 @@ export default function PizzaConfiguratorForm() {
     },
   ]);
 
-  const pizzaSizes: PizzaSize[] = [30, 35];
-  const pizzaSauces: PizzaSauce[] = ['tomato', 'white', 'hot'];
+  const pizzaSizes: PizzaSizeType[] = [30, 35];
+  const pizzaSauces: PizzaSauceType[] = ['tomato', 'white', 'hot'];
   const pizzaBases: PizzaBaseType[] = ['thin', 'thick'];
   const [cheese, setCheese] = useState<string[]>([]);
+  const [sauce, setSauce] = useState<string>('tomato');
 
   const [loading, setLoading] = useState(true);
 
@@ -41,13 +48,19 @@ export default function PizzaConfiguratorForm() {
     switch (type) {
       case 'add_cheese':
         return { ...ingredientsSelection, [payload.name]: payload.value };
+      case 'add_sauce':
+        return {
+          ...ingredientsSelection,
+          [payload.name]: payload.value,
+        };
       default:
-        return { cheese: ['all cheese is gone!'] };
+        return {};
     }
   }
 
   const [ingredientsSelection, dispatch] = useReducer(reducer, {
     cheese: [],
+    sauce: '',
   });
 
   useEffect(() => {
@@ -56,6 +69,13 @@ export default function PizzaConfiguratorForm() {
       payload: { name: 'cheese', value: cheese[0] },
     });
   }, [cheese]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'add_sauce',
+      payload: { name: 'sauce', value: sauce },
+    });
+  }, [sauce]);
 
   useEffect(() => {
     const loadIngredients = async () => {
@@ -72,19 +92,21 @@ export default function PizzaConfiguratorForm() {
 
   return (
     <>
-      {loading ? (
-        <div>Loading...</div>
-      ) : (
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
+      <form action="" onSubmit={handleSubmit(onSubmit)}>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
           <Cheese
             ingredients={ingredients}
             updateCheese={setCheese}
             category="cheese"
           />
+        )}
 
-          <button>Submit</button>
-        </form>
-      )}
+        <Sauce updateSauce={setSauce} category="sauce" />
+
+        <button>Submit</button>
+      </form>
 
       {/* <form action="" onSubmit={handleSubmit(onSubmit)}>
         {pizzaBases.map((base) => {

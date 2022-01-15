@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import Form from './index';
+// import * as jestDOM from '@testing-library/jest-dom';
 
 describe('pizza form', () => {
   // TODO: add missing ingredients
@@ -20,8 +21,9 @@ describe('pizza form', () => {
     expect(getByText('Loading...')).toBeInTheDocument();
   });
 
-  it.skip('renders fieldset items', () => {
+  it('renders fieldset items', () => {
     const { queryByText } = render(<Form />);
     expect(queryByText('cheese')).toBeInTheDocument();
+    expect(queryByText('cheese')).toHaveTextContent('cheese');
   });
 });

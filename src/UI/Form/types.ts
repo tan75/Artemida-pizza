@@ -11,14 +11,23 @@ export type Ingredient = {
 /**
  * Size in cm, default is 30
  */
-export type PizzaSize = 30 | 35;
+export type PizzaSizeType = 30 | 35;
 
 /**
  * Pizza sauce, default is tomato
  */
-export type PizzaSauce = 'tomato' | 'white' | 'hot';
+export type PizzaSauceType = 'tomato' | 'white' | 'hot';
 
 /**
  * Pizza base, default is thin
  */
 export type PizzaBaseType = 'thin' | 'thick';
+
+/**
+ * Ingredient categories
+ */
+export type IngredientsCategoryType =
+  | 'meat'
+  | 'vegetables'
+  | 'cheese'
+  | 'sauce';

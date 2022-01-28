@@ -10,6 +10,7 @@ import {
 import { PizzaIngredients } from './Ingredients';
 import Cheese from './Ingredients/Cheese';
 import Sauce from './Ingredients/Sauce';
+import Dough from './Ingredients/Dough';
 
 export default function PizzaConfiguratorForm() {
   const {
@@ -34,11 +35,9 @@ export default function PizzaConfiguratorForm() {
     },
   ]);
 
-  const pizzaSizes: PizzaSizeType[] = [30, 35];
-  const pizzaSauces: PizzaSauceType[] = ['tomato', 'white', 'hot'];
-  const pizzaBases: PizzaBaseType[] = ['thin', 'thick'];
   const [cheese, setCheese] = useState<string[]>([]);
   const [sauce, setSauce] = useState<string>('tomato');
+  const [dough, setDough] = useState<string>('thin');
 
   const [loading, setLoading] = useState(true);
 
@@ -49,6 +48,11 @@ export default function PizzaConfiguratorForm() {
       case 'add_cheese':
         return { ...ingredientsSelection, [payload.name]: payload.value };
       case 'add_sauce':
+        return {
+          ...ingredientsSelection,
+          [payload.name]: payload.value,
+        };
+      case 'add_dough':
         return {
           ...ingredientsSelection,
           [payload.name]: payload.value,
@@ -78,6 +82,13 @@ export default function PizzaConfiguratorForm() {
   }, [sauce]);
 
   useEffect(() => {
+    dispatch({
+      type: 'add_dough',
+      payload: { name: 'dough', value: dough },
+    });
+  }, [dough]);
+
+  useEffect(() => {
     const loadIngredients = async () => {
       const json = await getIngredients();
       setIngredients(json);
@@ -93,6 +104,10 @@ export default function PizzaConfiguratorForm() {
   return (
     <>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
+        <Sauce updateSauce={setSauce} category="sauce" />
+
+        <Dough updateDough={setDough} category="dough" />
+
         {loading ? (
           <div>Loading...</div>
         ) : (
@@ -102,8 +117,6 @@ export default function PizzaConfiguratorForm() {
             category="cheese"
           />
         )}
-
-        <Sauce updateSauce={setSauce} category="sauce" />
 
         <button>Submit</button>
       </form>

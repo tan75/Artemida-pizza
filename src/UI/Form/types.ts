@@ -19,6 +19,11 @@ export type PizzaSizeType = 30 | 35;
 export type PizzaSauceType = 'tomato' | 'white' | 'hot';
 
 /**
+ * Pizza dough, default is thin
+ */
+export type PizzaDoughType = 'thin' | 'thick';
+
+/**
  * Pizza base, default is thin
  */
 export type PizzaBaseType = 'thin' | 'thick';
@@ -27,7 +32,8 @@ export type PizzaBaseType = 'thin' | 'thick';
  * Ingredient categories
  */
 export type IngredientsCategoryType =
-  | 'meat'
-  | 'vegetables'
+  | 'dough'
+  | 'sauce'
   | 'cheese'
-  | 'sauce';
+  | 'meat'
+  | 'vegetables';

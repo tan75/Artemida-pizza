@@ -12,6 +12,7 @@ import Cheese from './Ingredients/Cheese';
 import Sauce from './Ingredients/Sauce';
 import Dough from './Ingredients/Dough';
 import Meat from './Ingredients/Meat';
+import Vegetables from './Ingredients/Vegetables';
 
 export default function PizzaConfiguratorForm() {
   const {
@@ -40,6 +41,7 @@ export default function PizzaConfiguratorForm() {
   const [sauce, setSauce] = useState<string>('tomato');
   const [cheese, setCheese] = useState<string[]>([]);
   const [meat, setMeat] = useState<string[]>([]);
+  const [vegetables, setVegetables] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -47,20 +49,22 @@ export default function PizzaConfiguratorForm() {
   //@ts-ignore
   function reducer(ingredientsSelection: any, { type, payload }) {
     switch (type) {
-      case 'add_cheese':
-        return { ...ingredientsSelection, [payload.name]: payload.value };
-      case 'add_meat':
-        return { ...ingredientsSelection, [payload.name]: payload.value };
-      case 'add_sauce':
-        return {
-          ...ingredientsSelection,
-          [payload.name]: payload.value,
-        };
       case 'add_dough':
         return {
           ...ingredientsSelection,
           [payload.name]: payload.value,
         };
+      case 'add_sauce':
+        return {
+          ...ingredientsSelection,
+          [payload.name]: payload.value,
+        };
+      case 'add_cheese':
+        return { ...ingredientsSelection, [payload.name]: payload.value };
+      case 'add_meat':
+        return { ...ingredientsSelection, [payload.name]: payload.value };
+      case 'add_vegetables':
+        return { ...ingredientsSelection, [payload.name]: payload.value };
       default:
         return {};
     }
@@ -71,6 +75,7 @@ export default function PizzaConfiguratorForm() {
     sauce: '',
     cheese: [],
     meat: [],
+    vegetables: [],
   });
 
   useEffect(() => {
@@ -100,6 +105,13 @@ export default function PizzaConfiguratorForm() {
       payload: { name: 'meat', value: meat[0] },
     });
   }, [meat]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'add_vegetables',
+      payload: { name: 'vegetables', value: vegetables[0] },
+    });
+  }, [vegetables]);
 
   useEffect(() => {
     const loadIngredients = async () => {
@@ -135,6 +147,12 @@ export default function PizzaConfiguratorForm() {
               ingredients={ingredients}
               updateMeat={setMeat}
               category="meat"
+            />
+
+            <Vegetables
+              ingredients={ingredients}
+              updateVegetables={setVegetables}
+              category="vegetables"
             />
           </>
         )}
